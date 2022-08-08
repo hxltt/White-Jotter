@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whitejotter.Mapper.JotterMapper">
+
+
+
+    <select id="list" parameterType="string"  resultType="com.whitejotter.entity.Note">
+        select N.id,U.username author,N.user_id userId,N.title,N.date,N.introduction,N.permissions,N.times,N.likes
+        from note N left join user U on N.user_id = U.id
+        where N.permissions = 1
+        <if test="username!=null">
+            or U.username = #{username}
+        </if>
+    </select>
+
+    <select id="getContent" parameterType="integer" resultType="string">
+        select content from note_content where note_id = #{note_id}
+    </select>
+
+
+</mapper>

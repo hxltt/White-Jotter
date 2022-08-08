@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whitejotter.Mapper.BookMapper">
+
+    <resultMap id="book" type="com.whitejotter.entity.Book">
+        <id property="id" column="bid"/>
+        <result property="cover" column="bcover"/>
+        <result property="title" column="btitle"/>
+        <result property="author" column="bauthor"/>
+        <result property="date" column="bdate"/>
+        <result property="press" column="bpress"/>
+        <result property="abs" column="babs"/>
+        <result property="cid" column="bcid"/>
+        <association property="category" javaType="com.whitejotter.entity.Category">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+        </association>
+    </resultMap>
+
+    <sql id="allcolumns">id,cover,title,author,date,press,abs,cid</sql>
+    <sql id="allcolumnsNoId">cover,title,author,date,press,abs,cid</sql>
+
+    <select id="selectAll" resultMap="book">
+        select books.id as bid,books.cover as bcover,books.title as btitle,books.author as bauthor,books.date as bdate,
+               books.press as bpress,books.abs as babs,books.cid as bcid, category.id as cid,category.name as cname
+        FROM books  LEFT JOIN category ON books.cid = category.id;
+    </select>
+
+    <select id="selectByBook" parameterType="com.whitejotter.entity.Book" resultType="com.whitejotter.entity.Book">
+        select <include refid="allcolumns"/> from books where id=#{id} or title=#{title}
+    </select>
+
+    <select id="selectByTitle" parameterType="com.whitejotter.entity.Book" resultType="com.whitejotter.entity.Book">
+        select <include refid="allcolumns"/> from books where title = #{title}
+    </select>
+
+    <select id="selectAllByCategory" parameterType="int" resultType="com.whitejotter.entity.Book">
+        select <include refid="allcolumns"/> from books where cid = #{id}
+    </select>
+
+    <select id="selectAllByTitleLikeOrAuthorLike" parameterType="string" resultType="com.whitejotter.entity.Book">
+        select <include refid="allcolumns"/> from books
+        where title like concat("%",#{title},"%") or author like concat("%",#{author},"%")
+    </select>
+
+    <insert id="insertBook" parameterType="com.whitejotter.entity.Book">
+        insert into books (<include refid="allcolumnsNoId"/>)
+        values (#{cover},#{title},#{author},#{date},#{press},#{abs},#{cid})
+    </insert>
+
+    <update id="updateBook" parameterType="com.whitejotter.entity.Book">
+        update books
+        set cover=#{cover},title=#{title},author=#{author},date=#{date},press=#{press},abs=#{abs},cid=#{cid}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="int">
+        delete from books
+        where id = #{id}
+    </delete>
+</mapper>
