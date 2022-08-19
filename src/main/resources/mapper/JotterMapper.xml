@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.whitejotter.Mapper.JotterMapper">
 
-
-
     <select id="list" parameterType="string"  resultType="com.whitejotter.entity.Note">
         select N.id,U.username author,N.user_id userId,N.title,N.date,N.introduction,N.permissions,N.times,N.likes
         from note N left join user U on N.user_id = U.id
@@ -13,9 +11,34 @@
         </if>
     </select>
 
+    <select id="ownlist" parameterType="string"  resultType="com.whitejotter.entity.Note">
+        select distinct N.id,U.username author,N.user_id userId,N.title,N.date,N.introduction,N.permissions,N.times,N.likes
+        from note N left join user U on N.user_id = U.id
+        where U.username = #{username}
+    </select>
+
+    <select id="ownlistByKeyword" parameterType="string"  resultType="com.whitejotter.entity.Note">
+        select distinct N.id,U.username author,N.user_id userId,N.title,N.date,N.introduction,N.permissions,N.times,N.likes
+        from note N left join user U on N.user_id = U.id
+        where N.title like concat('%',#{keyword},'%') or N.introduction like  concat('%',#{keyword},'%')
+    </select>
+
     <select id="getContent" parameterType="integer" resultType="string">
         select content from note_content where note_id = #{note_id}
     </select>
+
+    <insert id="insertNote" parameterType="com.whitejotter.entity.Note" useGeneratedKeys="true" keyProperty="id">
+        insert into note
+        (user_id, title, introduction,permissions,date)
+        value(#{userId}, #{title}, #{introduction}, #{permissions}, #{date})
+    </insert>
+
+    <insert id="insertContent" parameterType="com.whitejotter.entity.Note">
+        insert into note_content
+        (note_id, content)
+        value(#{id}, #{content})
+    </insert>
+
 
 
 </mapper>

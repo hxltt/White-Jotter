@@ -1,6 +1,7 @@
 package com.whitejotter.entity;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -12,8 +13,9 @@ public class Note {
     private String author;
     private String userId;
     private String title;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    private String Introduction;
+    private String introduction;
     private String content;
     private Boolean permissions;
     private Integer times;
