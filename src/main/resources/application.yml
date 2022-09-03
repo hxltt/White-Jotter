@@ -1,5 +1,5 @@
 server:
-  port: 8443.
+  port: 8443
 
 
 spring:
@@ -8,9 +8,28 @@ spring:
       url: jdbc:mysql://localhost:3306/white_jotter
       username: root
       password: 123456
+  main:
+    allow-circular-references: true
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  #配置映射文件
   type-aliases-package: java.com.whitejotter.entity #配置实体类
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+#yml配置
+logging:
+  config: classpath:log/logback.xml
+  level:
+    root: info
+  file:
+    path: D:/idea_workspace/baijuan/log
+

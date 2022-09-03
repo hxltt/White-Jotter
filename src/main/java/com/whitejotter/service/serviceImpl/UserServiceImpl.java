@@ -2,14 +2,20 @@ package com.whitejotter.service.serviceImpl;
 
 import com.whitejotter.Mapper.UserMapper;
 import com.whitejotter.entity.User;
+import com.whitejotter.entity.UserInfo;
 import com.whitejotter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+
 
     /**
      * 验证用户登录
@@ -56,5 +62,28 @@ public class UserServiceImpl implements UserService {
         @Override
     public User selectByUserName(String username){
         return userMapper.selectByUserName(username);
+    }
+
+    /**
+     * 修改密码
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean modifyPassword(User user) {
+        return userMapper.modifyPassword(user);
+    }
+
+    @Override
+    public UserInfo getUserInfo(String username) {
+        return userMapper.getUserInfo(username);
+    }
+
+    @Override
+    public boolean modifyUserInfo(UserInfo userInfo,String username) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userInfo",userInfo);
+        map.put("username",username);
+        return userMapper.modifyUserInfo(map);
     }
 }

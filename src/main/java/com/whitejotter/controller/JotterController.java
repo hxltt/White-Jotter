@@ -4,13 +4,16 @@ import com.whitejotter.entity.Note;
 import com.whitejotter.result.Result;
 import com.whitejotter.result.ResultFactory;
 import com.whitejotter.service.JotterService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController()
+@Slf4j
 public class JotterController {
+
     @Autowired
     private JotterService jotterService;
 
@@ -21,11 +24,14 @@ public class JotterController {
      */
     @GetMapping("/api/list")
     public Result list(@RequestParam("username")String username){
+//        log.info("sdwcfveca");
         try {
-            System.out.println("http://localhost:8443/api/list)");
+            log.info("获取笔记列表");
             List<Note> list = jotterService.list(username);
+//            log.info("获取笔记列表");
             return ResultFactory.buildSuccessResult(list);
         }catch (Exception e){
+//            log.info("获取笔记列表失败"+e.toString());
             return ResultFactory.buildFailResult("获取笔记列表失败");
         }
     }

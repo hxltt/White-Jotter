@@ -2,6 +2,7 @@ package com.whitejotter.Mapper;
 
 import com.whitejotter.entity.User;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +40,10 @@ public class UsermapperTest {
         System.out.println(usermapper.selectByUserName("hx").toString());
     }
 
-
+    @Test
+    void selectByUserName1(){
+        String encodedPassword = new SimpleHash("md5", "1234567", "8rqXnNUy5xik723i13ztHA==", 2).toString();
+        System.out.println(encodedPassword);
+    }
 
 }

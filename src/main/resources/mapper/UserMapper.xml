@@ -23,4 +23,28 @@
         value (#{username},#{password},#{salt})
     </insert>
 
+    <update id="modifyPassword" parameterType="com.whitejotter.entity.User">
+        update user
+        set password=#{password} ,salt=#{salt}
+        where username = #{username}
+    </update>
+
+    <select id="getUserInfo" parameterType="string" resultType="com.whitejotter.entity.UserInfo">
+        select user_name,head_portrait,description,signature,gender,birthday,address,profession from user_info
+        where user_name = #{username}
+    </select>
+
+    <update id="modifyUserInfo" parameterType="hashmap">
+        update user_info
+        <set>
+            <if test="userInfo.head_portrait!=null">head_portrait=#{userInfo.head_portrait},</if>
+            <if test="userInfo.description!=null">description=#{userInfo.description},</if>
+            <if test="userInfo.signature!=null">signature=#{userInfo.signature},</if>
+            <if test="userInfo.birthday!=null">signature=#{userInfo.signature},</if>
+            <if test="userInfo.address!=null">address=#{userInfo.address},</if>
+            <if test="userInfo.profession!=null">profession=#{userInfo.profession},</if>
+        </set>
+        where user_name = #{username}
+    </update>
+
 </mapper>

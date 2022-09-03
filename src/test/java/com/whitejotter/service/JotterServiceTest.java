@@ -1,5 +1,7 @@
 package com.whitejotter.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.whitejotter.Mapper.UserMapper;
 import com.whitejotter.entity.Note;
 import com.whitejotter.entity.User;
@@ -21,10 +23,20 @@ public class JotterServiceTest {
 
     @Test
     void list(){
+//        List<Note> list = jotterService.list("admin");
+//        for (Note note : list) {
+//            System.out.println(note.toString());
+//        }
+        // 需先定义查询的分页参数
+        PageHelper.startPage(2, 3);
+        // 一个普通的查询在其后，这个就q会被自动加上分页
         List<Note> list = jotterService.list("admin");
-        for (Note note : list) {
+        // 获取分页信息
+        PageInfo<Note> pageInfo = new PageInfo<>(list);
+        for (Note note : pageInfo.getList()) {
             System.out.println(note.toString());
         }
+//        System.out.println(pageInfo..toString());
     }
 
     @Test

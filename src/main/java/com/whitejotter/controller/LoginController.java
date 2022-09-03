@@ -34,7 +34,7 @@ public class LoginController {
     public Result logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        String message = "成功登出";
+        String message = "已退出账号！";
         return ResultFactory.buildSuccessResult(message);
     }
 
@@ -68,26 +68,21 @@ public class LoginController {
         }
     }
 
-
     /**
      * 注册功能
      * @return Result
      */
-    @PostMapping("api/register")
+    @PostMapping(value ="/api/register")
     public Result register(@RequestBody User user) {
         String username = user.getUsername();
         String password = user.getPassword();
         username = HtmlUtils.htmlEscape(username);
         user.setUsername(username);
-
-        System.out.println("0000000000000");
         boolean exist = userService.isExist(username);
         if (exist) {
             String message = "用户名已被使用";
             return ResultFactory.buildFailResult(message);
         }
-
-        System.out.println("1111111111111");
         // 生成盐,默认长度 16 位
         String salt = new SecureRandomNumberGenerator().nextBytes().toString();
         // 设置 hash 算法迭代次数

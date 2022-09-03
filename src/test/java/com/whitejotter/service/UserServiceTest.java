@@ -30,7 +30,7 @@ public class UserServiceTest {
 
     @Test
     void addUser(){
-        System.out.println(userService.addUser(new User("hx1","awdead","ds")));
+//        System.out.println(userService.addUser(new User("hx1","awdead","ds")));
     }
 
     @Test
