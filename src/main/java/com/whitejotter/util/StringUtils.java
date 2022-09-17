@@ -7,6 +7,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import java.util.Random;
 
 public class StringUtils {
+    public static final String PROFILE_PICTURE = "";
     public static String getRandomString(int length) {
         String base = "abcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();

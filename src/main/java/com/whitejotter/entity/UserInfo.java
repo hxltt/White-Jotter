@@ -13,7 +13,7 @@ public class UserInfo{
     /**
      * 头像
      */
-    private String head_portrait;
+    private String profilePicture;
 
     /**
      * 用户昵称
@@ -50,6 +50,11 @@ public class UserInfo{
      * 个性签名
      */
     private String signature;
+
+    /**
+     * 电话号码
+     */
+    private Long phone;
 
     public UserInfo() {
     }

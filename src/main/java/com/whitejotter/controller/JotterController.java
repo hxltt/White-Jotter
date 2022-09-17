@@ -24,14 +24,11 @@ public class JotterController {
      */
     @GetMapping("/api/list")
     public Result list(@RequestParam("username")String username){
-//        log.info("sdwcfveca");
         try {
             log.info("获取笔记列表");
             List<Note> list = jotterService.list(username);
-//            log.info("获取笔记列表");
             return ResultFactory.buildSuccessResult(list);
         }catch (Exception e){
-//            log.info("获取笔记列表失败"+e.toString());
             return ResultFactory.buildFailResult("获取笔记列表失败");
         }
     }

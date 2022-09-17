@@ -33,6 +33,8 @@ public interface UserMapper {
 
     boolean insertUser(User user);
 
+    boolean insertUserInfo(UserInfo userInfo);
+
     boolean modifyPassword(User user);
 
     UserInfo getUserInfo(String username);
@@ -42,5 +44,9 @@ public interface UserMapper {
      * @param map
      * @return
      */
-    boolean modifyUserInfo(HashMap<String,Object> map);
+    boolean modifyUserInfo(UserInfo userInfo);
+
+    boolean phoneIsExist(Long phone);
+
+    String getUsernameByphone(Long phone);
 }

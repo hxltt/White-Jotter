@@ -4,6 +4,7 @@ import com.whitejotter.Mapper.UserMapper;
 import com.whitejotter.entity.User;
 import com.whitejotter.entity.UserInfo;
 import com.whitejotter.service.UserService;
+import com.whitejotter.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionManager;
@@ -51,8 +52,14 @@ public class UserServiceImpl implements UserService {
      * @return boolean
      */
     @Override
-    public boolean addUser(User user){
-        return userMapper.insertUser(user);
+    public boolean addUser(User user,String phone){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setPhone(Long.parseLong(phone));
+        userInfo.setUsername(user.getUsername());
+        userInfo.setProfilePicture(StringUtils.PROFILE_PICTURE);
+        boolean result = userMapper.insertUserInfo(userInfo);
+        boolean result1 = userMapper.insertUser(user);
+        return result&&result1;
     }
 
     /**
@@ -80,10 +87,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean modifyUserInfo(UserInfo userInfo,String username) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userInfo",userInfo);
-        map.put("username",username);
-        return userMapper.modifyUserInfo(map);
+    public boolean modifyUserInfo(UserInfo userInfo) {
+        return userMapper.modifyUserInfo(userInfo);
+    }
+
+    @Override
+    public boolean phoneIsExist(Long phone) {
+        return userMapper.phoneIsExist(phone);
+    }
+
+    @Override
+    public String getUsernameByphone(Long phone) {
+        return userMapper.getUsernameByphone(phone) ;
     }
 }

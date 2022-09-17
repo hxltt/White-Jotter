@@ -31,7 +31,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    boolean addUser(User user);
+    boolean addUser(User user,String phone);
 
     User selectByUserName(String username);
 
@@ -51,5 +51,19 @@ public interface UserService {
      * @param username
      * @return
      */
-    boolean modifyUserInfo(UserInfo userInfo,String username);
+    boolean modifyUserInfo(UserInfo userInfo);
+
+    /**
+     * 判断电话号码是否存在
+     * @param phone
+     * @return
+     */
+    boolean phoneIsExist(Long phone);
+
+    /**
+     * 根据电话号码获取用户名
+     * @param phone
+     * @return
+     */
+    String getUsernameByphone(Long phone);
 }

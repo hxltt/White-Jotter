@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @Slf4j
 public class UserController {
@@ -19,23 +21,25 @@ public class UserController {
 
     /**
      * 修改密码
-     * @param user
+     * @param map
      * @return
      */
     @PostMapping("/api/modifyPassword")
-    public Result changePassword(@RequestBody User user){
+    public Result changePassword(@RequestBody Map<String,Object> map){
         try {
-            String password = user.getPassword();
-            //判断密码是否相同
+            User user = new User();
+            user.setPassword((String) map.get("password"));
+            user.setUsername((String) map.get("username"));
             user.setSalt(userService.getSalt(user.getUsername()));
+            //判断密码是否相同
             User encryption = StringUtils.encryption(user);
             boolean exist = userService.login(encryption.getUsername(), encryption.getPassword());
-            if(exist){
-                log.info(String.valueOf("新密码与旧密码相同"));
-                return ResultFactory.buildFailResult("新密码不能和旧密码一样");
+            if(!exist){
+                log.info(String.valueOf("原密码错误"));
+                return ResultFactory.buildFailResult("原密码错误");
             }else {
                 user.setSalt(null);
-                user.setPassword(password);
+                user.setPassword((String) map.get("newPassword"));
                 user = StringUtils.encryption(user);
                 userService.modifyPassword(user);
                 log.info(String.valueOf("修改密码成功"));
@@ -43,7 +47,6 @@ public class UserController {
             }
         } catch (Exception e){
             log.info(String.valueOf("修改密码失败"));
-            log.error(e.toString());
             return ResultFactory.buildFailResult("修改密码失败");
         }
     }
@@ -64,17 +67,14 @@ public class UserController {
     }
 
     /**
-     * 更改个人信息
-     * @param userinfo
-     * @param username
+     * 改个人信息
+     * @param userInfo
      * @return
      */
     @PostMapping("api/userInfo")
-    public Result modifyUserInfo(@RequestBody UserInfo userinfo, @RequestParam("username")String username){
-        log.info(userinfo.toString());
-        log.info(username);
+    public Result modifyUserInfo(@RequestBody UserInfo userInfo){
         try {
-            if (userService.modifyUserInfo(userinfo,username)){
+            if (userService.modifyUserInfo(userInfo)){
                 log.info("更改个人信息成功!");
                 return ResultFactory.buildSuccessResult("更改个人信息成功！");
             }

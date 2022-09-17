@@ -30,21 +30,36 @@
     </update>
 
     <select id="getUserInfo" parameterType="string" resultType="com.whitejotter.entity.UserInfo">
-        select user_name,head_portrait,description,signature,gender,birthday,address,profession from user_info
+        select user_name,profilePicture,description,signature,gender,birthday,address,profession
+        from user_info
         where user_name = #{username}
     </select>
 
-    <update id="modifyUserInfo" parameterType="hashmap">
+    <update id="modifyUserInfo" parameterType="com.whitejotter.entity.UserInfo">
         update user_info
         <set>
-            <if test="userInfo.head_portrait!=null">head_portrait=#{userInfo.head_portrait},</if>
-            <if test="userInfo.description!=null">description=#{userInfo.description},</if>
-            <if test="userInfo.signature!=null">signature=#{userInfo.signature},</if>
-            <if test="userInfo.birthday!=null">signature=#{userInfo.signature},</if>
-            <if test="userInfo.address!=null">address=#{userInfo.address},</if>
-            <if test="userInfo.profession!=null">profession=#{userInfo.profession},</if>
+            <if test="profilePicture!=null">profilePicture=#{profilePicture},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="signature!=null">signature=#{signature},</if>
+            <if test="birthday!=null">signature=#{signature},</if>
+            <if test="address!=null">address=#{address},</if>
+            <if test="profession!=null">profession=#{profession},</if>
         </set>
         where user_name = #{username}
     </update>
+
+    <insert id="insertUserInfo" parameterType="hashmap">
+        insert into
+        user_info(user_name,profilePicture,description,signature,gender,birthday,address,profession,phone)
+        values (#{username},#{profilePicture},#{description},#{signature},#{gender},#{birthday},#{address},#{profession},#{phone})
+    </insert>
+
+    <select id="phoneIsExist" parameterType="long" resultType="boolean">
+        select count(1) from user_info where phone = #{phone}
+    </select>
+
+    <select id="getUsernameByphone" parameterType="long" resultType="string">
+        select user_name from user_info where phone = #{phone}
+    </select>
 
 </mapper>
